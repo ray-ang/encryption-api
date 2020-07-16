@@ -100,16 +100,16 @@ function decrypt($encrypted)
 
 /* Require POST method */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('HTTP/1.1 405 Method should be \'POST\'');
-    exit();
+	header('HTTP/1.1 405 Method should be \'POST\'');
+	exit();
 }
 
 $body = file_get_contents('php://input'); // Plaintext or encoded ciphertext
 
 /* Require request body (not enctype="multipart/form-data") */
 if (empty($body)) {
-    header('HTTP/1.1 400 The request should have a body, and must not be enctype="multipart/form-data".');
-    exit();
+	header('HTTP/1.1 400 The request should have a body, and must not be enctype="multipart/form-data".');
+	exit();
 }
 
 /* Require parameter "action" */
