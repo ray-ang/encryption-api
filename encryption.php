@@ -77,8 +77,7 @@ function decrypt($encrypted)
 		// HMAC authentication
 		if  ( hash_equals($hash, $digest) ) {
 			return openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv);
-			}
-		else {
+		} else {
 			exit('Please verify authenticity of ciphertext.');
 		}
 	}
@@ -116,7 +115,7 @@ if (empty($body)) {
 /* Require parameter "action" */
 if (! isset($_GET['action']) || empty($_GET['action'])) {
 	header('HTTP/1.1 400 Please set "action" parameter to either "encrypt" or "decrypt".');
-    exit();
+	exit();
 }
 
 $action = $_GET['action'];
@@ -126,5 +125,5 @@ if (function_exists($action)) {
 	echo $action($body);
 } else {
 	header('HTTP/1.1 400 Please set "action" parameter to either "encrypt" or "decrypt".');
-    exit();
+	exit();
 }
