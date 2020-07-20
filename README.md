@@ -8,11 +8,11 @@ An API that can be used for encryption and decryption of data using acceptable s
 ### Example
 Endpoint: encryption.php?action=encrypt<br />
 Method: POST<br />
-Body: 12345<br />
-Response: enc-v1::RTNEUDJqRT0=::OWFkMGI4NDBlOTZhNjhiYThlZGJkMzI4OTRhNTU0ZmU1Nzk4ZDdlMTFiZjQxNzEzNDNmZmZkNDA4NjMzNmZkZg==::uet2Uhq/iUU+9ib5FDXMMQ==::c829lvY2cLEb3UdteczNCA==::v/cBUoWbSHjd2Lbzynqiog==<br />
+Body: {"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}<br />
+Response: {"data":"enc-v1::Tkc4b2ZjRlhPZlJl::MzJkY2E0ZGY0MTAxZmNkMzgzYWNiMTNmZmJlYjJjNWI4OGZiMTRjMzM5YTAxZDdlY2NkNTFhOTlkMjBjNjg1Mg==::aUUDzASxjAqsZsaLpO5RWQ==::NgoigVuKdPrsxB+DZzp38g==","authenticated":"enc-v1::TEdpTQ==::MjJmNjdlMzI4N2Y4Y2ViZmU2YTViMmE4ZDZmNDJmYjYxYTEyZDcyYWQwMmZhZDBiZDllMWIzMTJhOGZlNjE2NQ==::vJxTzZsQj9t4nHzb97n1EQ==::VzguGzw1w4\/MAfTaFHDg+w==","privacy":"enc-v1::b05kbA==::YzY4ZmRiZGFjNDRmNzc0MmZjOGMxNjEzNmUzMzkxNTg0MzI0MGM2MzgzNjVlYzJlN2RkMGEzOWEyMWU2YzFkNg==::PHHhrpd0Wuxml\/8GNdmfnA==::s+XJtX3\/usw6dAImD7qSuw==","compliance":"enc-v1::SERicw==::OTQ0ZmJiYzM3ZWM0ODU4NzZiY2U2Zjk1YjQ1YWU4ZjIxOGYzN2VmMjE1MTFmM2M0MjU0NmQzNGYzYjQ5NWQ1YQ==::q5aPvA\/Ls\/ad04P+nbAQSw==::NQ5FNu+JcSF6+I3ahTlFfw=="}<br />
 <br />
 Endpoint: encryption.php?action=decrypt<br />
 Method: POST<br />
-Body: enc-v1::RTNEUDJqRT0=::OWFkMGI4NDBlOTZhNjhiYThlZGJkMzI4OTRhNTU0ZmU1Nzk4ZDdlMTFiZjQxNzEzNDNmZmZkNDA4NjMzNmZkZg==::uet2Uhq/iUU+9ib5FDXMMQ==::c829lvY2cLEb3UdteczNCA==::v/cBUoWbSHjd2Lbzynqiog==<br />
-Response: 12345
+Body: {"data":"enc-v1::Tkc4b2ZjRlhPZlJl::MzJkY2E0ZGY0MTAxZmNkMzgzYWNiMTNmZmJlYjJjNWI4OGZiMTRjMzM5YTAxZDdlY2NkNTFhOTlkMjBjNjg1Mg==::aUUDzASxjAqsZsaLpO5RWQ==::NgoigVuKdPrsxB+DZzp38g==","authenticated":"enc-v1::TEdpTQ==::MjJmNjdlMzI4N2Y4Y2ViZmU2YTViMmE4ZDZmNDJmYjYxYTEyZDcyYWQwMmZhZDBiZDllMWIzMTJhOGZlNjE2NQ==::vJxTzZsQj9t4nHzb97n1EQ==::VzguGzw1w4\/MAfTaFHDg+w==","privacy":"enc-v1::b05kbA==::YzY4ZmRiZGFjNDRmNzc0MmZjOGMxNjEzNmUzMzkxNTg0MzI0MGM2MzgzNjVlYzJlN2RkMGEzOWEyMWU2YzFkNg==::PHHhrpd0Wuxml\/8GNdmfnA==::s+XJtX3\/usw6dAImD7qSuw==","compliance":"enc-v1::SERicw==::OTQ0ZmJiYzM3ZWM0ODU4NzZiY2U2Zjk1YjQ1YWU4ZjIxOGYzN2VmMjE1MTFmM2M0MjU0NmQzNGYzYjQ5NWQ1YQ==::q5aPvA\/Ls\/ad04P+nbAQSw==::NQ5FNu+JcSF6+I3ahTlFfw=="}<br />
+Response: {"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}
 
