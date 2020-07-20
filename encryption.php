@@ -20,26 +20,21 @@ function encrypt($plaintext)
 {
 	function encrypt_v1($plaintext)
 	{
-		// Version and Cipher method
+		// Version, Cipher Method and Initialization Vector
 		$version = 'enc-v1';
 		$cipher = 'aes-256-ctr';
-
-		// Salt and Encryption key
-		$salt_key = random_bytes(16);
-		$key = hash_pbkdf2('sha256', PASS_PHRASE, $salt_key, 10000);
-
-		// Initialization vector
 		$iv = random_bytes(16);
 
-		// Salt and HMAC key
-		$salt_hmac = random_bytes(16);
-		$key_hmac = hash_pbkdf2('sha256', PASS_PHRASE, $salt_hmac, 10000);
+		// Salt and Keys
+		$salt = random_bytes(16);
+		$key = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Encryption
+		$key_hmac = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // HMAC
 
 		// Ciphertext and Hash
 		$ciphertext = openssl_encrypt($plaintext, $cipher, $key, $options=0, $iv);
 		$hash = hash_hmac('sha256', $ciphertext, $key_hmac);
 
-		return $version . '::' . base64_encode($ciphertext) . '::' . base64_encode($hash) . '::' . base64_encode($iv) . '::' . base64_encode($salt_key) . '::' . base64_encode($salt_hmac);
+		return $version . '::' . base64_encode($ciphertext) . '::' . base64_encode($hash) . '::' . base64_encode($iv) . '::' . base64_encode($salt);
 	}
 
 	/* Version-based Encryption */
@@ -60,21 +55,20 @@ function decrypt($encrypted)
 		// Cipher method
 		$cipher = 'aes-256-ctr';
 
-		list($version, $ciphertext, $hash, $iv, $salt_key, $salt_hmac) = explode('::', $encrypted);
+		list($version, $ciphertext, $hash, $iv, $salt) = explode('::', $encrypted);
 		$ciphertext = base64_decode($ciphertext);
 		$hash = base64_decode($hash);
 		$iv = base64_decode($iv);
-		$salt_key = base64_decode($salt_key);
-		$salt_hmac = base64_decode($salt_hmac);
+		$salt = base64_decode($salt);
 
-		// Derive encryption and HMAC keys
-		$key = hash_pbkdf2('sha256', PASS_PHRASE, $salt_key, 10000);
-		$key_hmac = hash_pbkdf2('sha256', PASS_PHRASE, $salt_hmac, 10000);
+		// Derive Keys
+		$key = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Decryption
+		$key_hmac = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // HMAC
 
 		// Calculate hash of ciphertext
 		$digest = hash_hmac('sha256', $ciphertext, $key_hmac);
 
-		// HMAC authentication
+		// HMAC Authentication
 		if  ( hash_equals($hash, $digest) ) {
 			return openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv);
 		} else {
