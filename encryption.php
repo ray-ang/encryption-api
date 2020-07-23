@@ -4,12 +4,12 @@
  * PHP Encryption API
  * 
  * @author		Raymund John Ang <raymund@open-nis.org>
- * @version		1.0
+ * @version		0.9
  * @license		MIT License
  */
 
 // Change 'MySecret12345' to own secret passphrase
- define('PASS_PHRASE', 'MySecret12345');
+define('PASS_PHRASE', 'MySecret12345');
 
 /**
  * Encrypt data using AES CTR-HMAC
@@ -28,7 +28,7 @@ function encrypt($plaintext)
 			$salt = random_bytes(16); // Salt (randomness)
 			$iv = $salt; // Initialization Vector
 
-			// Derive keys
+			// Derive Keys
 			$masterKey = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Master Key
 			$encKey = hash_hkdf('sha256', $masterKey, 32, 'aes-256-encryption', $salt); // Encryption Key
 			$hmacKey = hash_hkdf('sha256', $masterKey, 32, 'sha-256-authentication', $salt); // HMAC Key
@@ -67,7 +67,7 @@ function decrypt($encrypted)
 
 			$iv = $salt; // Initialization Vector
 
-			// Derive keys
+			// Derive Keys
 			$masterKey = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Master Key
 			$encKey = hash_hkdf('sha256', $masterKey, 32, 'aes-256-encryption', $salt); // Encryption Key
 			$hmacKey = hash_hkdf('sha256', $masterKey, 32, 'sha-256-authentication', $salt); // HMAC Key
