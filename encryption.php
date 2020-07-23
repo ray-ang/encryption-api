@@ -8,12 +8,14 @@
  * @license		MIT License
  */
 
-define('PASS_PHRASE', 'MySecret12345'); // Define PASS_PHRASE
+// Change 'MySecret12345' to own secret passphrase
+ define('PASS_PHRASE', 'MySecret12345');
 
 /**
  * Encrypt data using AES CTR-HMAC
  *
  * @param string $plaintext - Plaintext to be encrypted
+ * @return string           - contains base64-encoded ciphertext 
  */
 
 function encrypt($plaintext)
@@ -21,21 +23,21 @@ function encrypt($plaintext)
 	if (! function_exists('encrypt_v1')) {
 		function encrypt_v1($plaintext)
 		{
-			// Version, Cipher Method and Initialization Vector
-			$version = 'enc-v1';
-			$cipher = 'aes-256-ctr';
-			$iv = random_bytes(16);
+			$version = 'enc-v1'; // Version
+			$cipher = 'aes-256-ctr'; // Cipher Method
+			$salt = random_bytes(16); // Salt (randomness)
+			$iv = $salt; // Initialization Vector
 
-			// Salt and Keys
-			$salt = random_bytes(16);
-			$key = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Encryption
-			$key_hmac = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // HMAC
+			// Derive keys
+			$masterKey = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Master Key
+			$encKey = hash_hkdf('sha256', $masterKey, 32, 'aes-256-encryption', $salt); // Encryption Key
+			$hmacKey = hash_hkdf('sha256', $masterKey, 32, 'sha-256-authentication', $salt); // HMAC Key
 
 			// Ciphertext and Hash
-			$ciphertext = openssl_encrypt($plaintext, $cipher, $key, $options=0, $iv);
-			$hash = hash_hmac('sha256', $ciphertext, $key_hmac);
+			$ciphertext = openssl_encrypt($plaintext, $cipher, $encKey, $options=0, $iv);
+			$hash = hash_hmac('sha256', $ciphertext, $hmacKey);
 
-			return $version . '::' . base64_encode($ciphertext) . '::' . base64_encode($hash) . '::' . base64_encode($iv) . '::' . base64_encode($salt);
+			return $version . '::' . base64_encode($ciphertext) . '::' . base64_encode($hash) . '::' . base64_encode($salt);
 		}
 	}
 	
@@ -48,6 +50,7 @@ function encrypt($plaintext)
  * Decrypt data using AES CTR-HMAC
  *
  * @param string $encypted - base64-encoded data
+ * @return string          - decrypted data
  */
 
 function decrypt($encrypted)
@@ -55,25 +58,26 @@ function decrypt($encrypted)
 	if (! function_exists('decrypt_v1')) {
 		function decrypt_v1($encrypted)
 		{
-			// Cipher method
-			$cipher = 'aes-256-ctr';
+			$cipher = 'aes-256-ctr'; // Cipher Method
 
-			list($version, $ciphertext, $hash, $iv, $salt) = explode('::', $encrypted);
+			list($version, $ciphertext, $hash, $salt) = explode('::', $encrypted);
 			$ciphertext = base64_decode($ciphertext);
 			$hash = base64_decode($hash);
-			$iv = base64_decode($iv);
 			$salt = base64_decode($salt);
 
-			// Derive Keys
-			$key = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Decryption
-			$key_hmac = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // HMAC
+			$iv = $salt; // Initialization Vector
+
+			// Derive keys
+			$masterKey = hash_pbkdf2('sha256', PASS_PHRASE, $salt, 10000); // Master Key
+			$encKey = hash_hkdf('sha256', $masterKey, 32, 'aes-256-encryption', $salt); // Encryption Key
+			$hmacKey = hash_hkdf('sha256', $masterKey, 32, 'sha-256-authentication', $salt); // HMAC Key
 
 			// Calculate hash of ciphertext
-			$digest = hash_hmac('sha256', $ciphertext, $key_hmac);
+			$digest = hash_hmac('sha256', $ciphertext, $hmacKey);
 
 			// HMAC Authentication
 			if  ( hash_equals($hash, $digest) ) {
-				return openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv);
+				return openssl_decrypt($ciphertext, $cipher, $encKey, $options=0, $iv);
 			} else {
 				exit('Please verify authenticity of ciphertext.');
 			}
@@ -124,14 +128,13 @@ if (! isset($_GET['action']) || empty($_GET['action'])) {
 	exit();
 }
 
-$body_obj = json_decode($body);
 $action = $_GET['action'];
 
 /* Execute Function */
 if (function_exists($action)) {
-	$data = new stdClass();
-	foreach($body_obj as $key => $value) {
-		$data->$key = $action($value);
+	$data = array();
+	foreach($body_array as $key => $value) {
+		$data[$key] = $action($value);
 	}
 	echo json_encode($data);
 } else {
