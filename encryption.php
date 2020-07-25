@@ -97,7 +97,7 @@ function decrypt($encrypted)
 }
 
 /**
- * Remote Procedure Call (RPC) API
+ * API Call
  */
 
 /* Require POST method */
