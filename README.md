@@ -12,12 +12,16 @@ An API that can be used for encryption and decryption of data using current stan
 #### Encryption
 Endpoint: encryption.php?action=encrypt<br />
 Method: POST<br />
-Body: {"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}<br />
-Response: {"data":"enc-v1::YXMrVVozeG00VTVP::ODE0NzY3YWNlNDdlZjMzOWQwZGVlNjA3ZTZkMGMzYTdiNWFhYTZjZGIxYTk5ZWQ1ZDJjOTQ5YzA0MjFmYmEzMQ==::74ulIhXxz3P+LLhMek0qkg==","authenticated":"enc-v1::VzNlaw==::MWVlNGY3OWVjYTIxNDMyMzg5N2FiYzBjOWRlMDNhOGI1MjZjOGJkMTYwMWI4OWNhMjVmOGNmNWJmZmJkM2Q3YQ==::Pbn4wu\/mtP4OAN8JP5ffVw==","privacy":"enc-v1::NjlPNA==::MWE1MzhlODFjMGRiYzJjNzk5ZjVmZDk0NGYzMDM3M2Y2NTg3ZTIzNDdiNDk3ZmVhNzdhZTA3OGYxNzUxZGU4NA==::cK\/JdQTgOqGUHLseVxPoyQ==","compliance":"enc-v1::RUJURA==::OTg4ZDc1MGY0MmZiNzE4ZjkzOTQyYzRiZGZmODI5NjQ2YzgzMzlmN2FhYzRmYzdiYWQ0OGEyOWNmYjIzMmM1NQ==::HS32b0rcZaCbVvtVN1PEjw=="}<br />
+Body:<br />
+{"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}<br />
+Response:<br />
+{"data":"enc-v1::YXMrVVozeG00VTVP::ODE0NzY3YWNlNDdlZjMzOWQwZGVlNjA3ZTZkMGMzYTdiNWFhYTZjZGIxYTk5ZWQ1ZDJjOTQ5YzA0MjFmYmEzMQ==::74ulIhXxz3P+LLhMek0qkg==","authenticated":"enc-v1::VzNlaw==::MWVlNGY3OWVjYTIxNDMyMzg5N2FiYzBjOWRlMDNhOGI1MjZjOGJkMTYwMWI4OWNhMjVmOGNmNWJmZmJkM2Q3YQ==::Pbn4wu\/mtP4OAN8JP5ffVw==","privacy":"enc-v1::NjlPNA==::MWE1MzhlODFjMGRiYzJjNzk5ZjVmZDk0NGYzMDM3M2Y2NTg3ZTIzNDdiNDk3ZmVhNzdhZTA3OGYxNzUxZGU4NA==::cK\/JdQTgOqGUHLseVxPoyQ==","compliance":"enc-v1::RUJURA==::OTg4ZDc1MGY0MmZiNzE4ZjkzOTQyYzRiZGZmODI5NjQ2YzgzMzlmN2FhYzRmYzdiYWQ0OGEyOWNmYjIzMmM1NQ==::HS32b0rcZaCbVvtVN1PEjw=="}<br />
 <br />
 #### Decryption
 Endpoint: encryption.php?action=decrypt<br />
 Method: POST<br />
-Body: {"data":"enc-v1::YXMrVVozeG00VTVP::ODE0NzY3YWNlNDdlZjMzOWQwZGVlNjA3ZTZkMGMzYTdiNWFhYTZjZGIxYTk5ZWQ1ZDJjOTQ5YzA0MjFmYmEzMQ==::74ulIhXxz3P+LLhMek0qkg==","authenticated":"enc-v1::VzNlaw==::MWVlNGY3OWVjYTIxNDMyMzg5N2FiYzBjOWRlMDNhOGI1MjZjOGJkMTYwMWI4OWNhMjVmOGNmNWJmZmJkM2Q3YQ==::Pbn4wu\/mtP4OAN8JP5ffVw==","privacy":"enc-v1::NjlPNA==::MWE1MzhlODFjMGRiYzJjNzk5ZjVmZDk0NGYzMDM3M2Y2NTg3ZTIzNDdiNDk3ZmVhNzdhZTA3OGYxNzUxZGU4NA==::cK\/JdQTgOqGUHLseVxPoyQ==","compliance":"enc-v1::RUJURA==::OTg4ZDc1MGY0MmZiNzE4ZjkzOTQyYzRiZGZmODI5NjQ2YzgzMzlmN2FhYzRmYzdiYWQ0OGEyOWNmYjIzMmM1NQ==::HS32b0rcZaCbVvtVN1PEjw=="}<br />
-Response: {"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}
+Body:<br />
+{"data":"enc-v1::YXMrVVozeG00VTVP::ODE0NzY3YWNlNDdlZjMzOWQwZGVlNjA3ZTZkMGMzYTdiNWFhYTZjZGIxYTk5ZWQ1ZDJjOTQ5YzA0MjFmYmEzMQ==::74ulIhXxz3P+LLhMek0qkg==","authenticated":"enc-v1::VzNlaw==::MWVlNGY3OWVjYTIxNDMyMzg5N2FiYzBjOWRlMDNhOGI1MjZjOGJkMTYwMWI4OWNhMjVmOGNmNWJmZmJkM2Q3YQ==::Pbn4wu\/mtP4OAN8JP5ffVw==","privacy":"enc-v1::NjlPNA==::MWE1MzhlODFjMGRiYzJjNzk5ZjVmZDk0NGYzMDM3M2Y2NTg3ZTIzNDdiNDk3ZmVhNzdhZTA3OGYxNzUxZGU4NA==::cK\/JdQTgOqGUHLseVxPoyQ==","compliance":"enc-v1::RUJURA==::OTg4ZDc1MGY0MmZiNzE4ZjkzOTQyYzRiZGZmODI5NjQ2YzgzMzlmN2FhYzRmYzdiYWQ0OGEyOWNmYjIzMmM1NQ==::HS32b0rcZaCbVvtVN1PEjw=="}<br />
+Response:<br />
+{"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}
 
