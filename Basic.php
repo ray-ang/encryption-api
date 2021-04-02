@@ -205,7 +205,7 @@ class Basic
 	 * Encrypt data using AES GCM, CTR-HMAC or CBC-HMAC
 	 *
 	 * @param string $plaintext   - Plaintext to be encrypted
-	 * @param string $pass_phrase - Encryption passphrase
+	 * @param string $pass_phrase - Passphrase or encryption API URL
 	 * @param string $cipher      - Cipher method
 	 *
 	 * @return string             - Contains based64-encoded ciphertext
@@ -228,6 +228,10 @@ class Basic
 
 				if ( filter_var($pass_phrase, FILTER_VALIDATE_URL) ) {
 					$api = $pass_phrase . '?action=encrypt';
+					$response = Basic::apiCall('POST', $api, ['key' => $pass_phrase]);
+
+					if ($response['code'] !== 200) Basic::apiResponse($response['code']);
+					
 					$pass_phrase = bin2hex( random_bytes(32) );
 				}
 
@@ -247,9 +251,9 @@ class Basic
 						$kek = $kek['key'];
 
 						return str_replace('=', '', $encrypted . '.' . $kek); // Strip off '='
+					} else {
+						return str_replace('=', '', $encrypted); // Strip off '='
 					}
-
-					return str_replace('=', '', $encrypted); // Strip off '='
 
 				} else {
 
@@ -263,9 +267,9 @@ class Basic
 						$kek = $kek['key'];
 
 						return str_replace('=', '', $encrypted . '.' . $kek); // Strip off '='
+					} else {
+						return str_replace('=', '', $encrypted); // Strip off '='
 					}
-
-					return str_replace('=', '', $encrypted); // Strip off '='
 
 				}
 
@@ -282,7 +286,7 @@ class Basic
 	 * Decrypt data using AES GCM, CTR-HMAC or CBC-HMAC
 	 *
 	 * @param string $encrypted   - Contains base64-encoded ciphertext
-	 * @param string $pass_phrase - Encryption passphrase
+	 * @param string $pass_phrase - Passphrase or encryption API URL
 	 * @param string $cipher      - Cipher method
 	 *
 	 * @return string             - Decrypted data
@@ -303,6 +307,9 @@ class Basic
 
 					if ( filter_var($pass_phrase, FILTER_VALIDATE_URL) ) {
 						$api = $pass_phrase . '?action=decrypt';
+						$response = Basic::apiCall('POST', $api, ['key' => $pass_phrase]);
+
+						if ($response['code'] !== 200) Basic::apiResponse($response['code']);
 
 						list($version, $ciphertext, $tag, $salt, $version_kek, $ciphertext_kek, $tag_kek, $salt_kek) = explode('.', $encrypted);
 
@@ -539,6 +546,64 @@ class Basic
 				self::apiResponse(404, 'The page you requested could not be found.');
 				exit;
 			}
+		}
+	}
+
+	/**
+	 * Encryption API - Key-Encryption-Key (KEK)
+	 * Credits: https://github.com/ray-ang/encryption-api
+	 *
+	 * @param string $pass_phrase	- KEK master key
+	 */
+
+	public static function apiEncrypt($pass_phrase) {
+		/* Require POST method */
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+			self::apiResponse(405, "Method should be 'POST'.");
+			exit();
+		}
+
+		$body = file_get_contents('php://input'); // Request body
+
+		/* Require request body (not enctype="multipart/form-data") */
+		if ( empty($body) ) {
+			self::apiResponse(400, 'The request should have a body, and must not be enctype="multipart/form-data".');
+			exit();
+		}
+
+		/* Require request body to be in JSON format */
+		$body_array = json_decode($body, TRUE); // Convert JSON body string into array
+
+		if (! is_array($body_array)) {
+			self::apiResponse(400, 'The request body should be in JSON format.');
+			exit();
+		}
+
+		/* Require parameter "action" */
+		if (! isset($_GET['action']) || empty($_GET['action'])) {
+			self::apiResponse(400, 'Please set "action" parameter to either "encrypt" or "decrypt".');
+			exit();
+		}
+
+		/* Execute Function */
+		switch ($_GET['action']) {
+			case 'encrypt':
+				$data = array();
+				foreach($body_array as $key => $value) {
+					$data[$key] = self::encrypt($value, $pass_phrase);
+				}
+				echo json_encode($data);
+				break;
+			case 'decrypt':
+				$data = array();
+				foreach($body_array as $key => $value) {
+					$data[$key] = self::decrypt($value, $pass_phrase);
+				}
+				echo json_encode($data);
+				break;
+			default:
+				Basic::apiResponse(400, 'Please set "action" parameter to either "encrypt" or "decrypt".');
+				exit();
 		}
 	}
 
