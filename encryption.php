@@ -3,12 +3,13 @@
 /**
  * PHP Encryption API
  * 
- * @author		Raymund John Ang <raymund@open-nis.org>
- * @license		MIT License
+ * @version 	v0.9.0
+ * @author 		Raymund John Ang <raymund@open-nis.org>
+ * @license 	MIT License
  */
 
 require_once 'Basic.php'; // BasicPHP class library
-Basic::encryption('MySecret12345'); // Encryption middleware
+define('PASS_PHRASE', 'MySecret12345'); // Encryption key
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 	exit();
 }
 
-$body = file_get_contents('php://input'); // Javascript JSON.stringify() format
+$body = file_get_contents('php://input'); // Request body
 
 /* Require request body (not enctype="multipart/form-data") */
-if (empty($body)) {
+if ( empty($body) ) {
 	Basic::apiResponse(400, 'The request should have a body, and must not be enctype="multipart/form-data".');
 	exit();
 }
@@ -54,14 +55,14 @@ switch ($_GET['action']) {
 	case 'encrypt':
 		$data = array();
 		foreach($body_array as $key => $value) {
-			$data[$key] = Basic::encrypt($value);
+			$data[$key] = Basic::encrypt($value, PASS_PHRASE);
 		}
 		echo json_encode($data);
 		break;
 	case 'decrypt':
 		$data = array();
 		foreach($body_array as $key => $value) {
-			$data[$key] = Basic::decrypt($value);
+			$data[$key] = Basic::decrypt($value, PASS_PHRASE);
 		}
 		echo json_encode($data);
 		break;
