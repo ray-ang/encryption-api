@@ -15,13 +15,13 @@ Method: POST<br />
 Body:<br />
 {"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}<br />
 Response:<br />
-{"data":"enc-v1::ZG5HRHdDdWxOakcz::qK91wgzHeJzTt\/GobeZbyA==::1IPQvH6PhTOi\/ktB0G5\/mA==","authenticated":"enc-v1::WktyZQ==::mz094uYW0sW0YbR04eizgA==::zGZDcAjHBRPuJtu4lBVx6A==","privacy":"enc-v1::RnJpLw==::s6njzWa3VpTQ\/Do3TSV9gA==::k+2I3O6z1PJhPEkoOtolEg==","compliance":"enc-v1::eTVCZw==::wPYu4orKufw6\/BocOrdLWQ==::gYYWANkon9b7M279FiQrkA=="}<br />
+{"data":"encv1.ek80R2pzN3NaRkxM.jFQGj3UxwqID8q9\/f8GfEQ.pp0nQpfJLuOYwTKlJwU20A","authenticated":"encv1.VWg3OQ.eFOXNO3bVL7NX1keIVTF0A.UBrI0BmU9F1FRyPhR1HJYA","privacy":"encv1.N0tLMg.GQB6ShSTe5dQlgUhRw33AQ.QWptKAm4I9Q2RYK1z5rS0w","compliance":"encv1.cjROaw.63xzrAxGDXruO6oqU32jtA.MnVAMl4DHiadP+GKdH2kyg"}<br />
 <br />
 #### Decryption
 Endpoint: encryption.php?action=decrypt<br />
 Method: POST<br />
 Body:<br />
-{"data":"enc-v1::ZG5HRHdDdWxOakcz::qK91wgzHeJzTt\/GobeZbyA==::1IPQvH6PhTOi\/ktB0G5\/mA==","authenticated":"enc-v1::WktyZQ==::mz094uYW0sW0YbR04eizgA==::zGZDcAjHBRPuJtu4lBVx6A==","privacy":"enc-v1::RnJpLw==::s6njzWa3VpTQ\/Do3TSV9gA==::k+2I3O6z1PJhPEkoOtolEg==","compliance":"enc-v1::eTVCZw==::wPYu4orKufw6\/BocOrdLWQ==::gYYWANkon9b7M279FiQrkA=="}<br />
+{"data":"encv1.ek80R2pzN3NaRkxM.jFQGj3UxwqID8q9\/f8GfEQ.pp0nQpfJLuOYwTKlJwU20A","authenticated":"encv1.VWg3OQ.eFOXNO3bVL7NX1keIVTF0A.UBrI0BmU9F1FRyPhR1HJYA","privacy":"encv1.N0tLMg.GQB6ShSTe5dQlgUhRw33AQ.QWptKAm4I9Q2RYK1z5rS0w","compliance":"encv1.cjROaw.63xzrAxGDXruO6oqU32jtA.MnVAMl4DHiadP+GKdH2kyg"}<br />
 Response:<br />
 {"data":"encrypted","authenticated":"yes","privacy":"yes","compliance":"yes"}
 
