@@ -8,7 +8,7 @@
  * @license 	MIT License
  */
 
-require_once 'Basic.php'; // BasicPHP class library
+require_once __DIR__ . '/Basic.php'; // BasicPHP class library
 define('PASS_PHRASE', 'MySecret12345'); // Encryption key
 
 /*
