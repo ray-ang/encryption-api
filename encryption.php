@@ -47,10 +47,11 @@ if (! isset($_GET['action']) || empty($_GET['action'])) {
 
 /*
 |--------------------------------------------------------------------------
-| Execute Function
+| Execute Method
 |--------------------------------------------------------------------------
 */
 
+// Execute method using "switch" to prevent Function Injection Attack
 switch ($_GET['action']) {
 	case 'encrypt':
 		$data = array();
